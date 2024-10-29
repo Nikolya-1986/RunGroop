@@ -28,3 +28,4 @@ D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\refint\RunGroop.d
 D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\RunGroop.pdb
 D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\RunGroop.genruntimeconfig.cache
 D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\ref\RunGroop.dll
+D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\RunGroop.sourcelink.json
