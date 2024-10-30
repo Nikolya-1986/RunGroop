@@ -10,7 +10,7 @@ namespace RunGroop.Data
 
         }
 
-        public DbSet<Race> Rases { get; set; }
+        public DbSet<Race> Races { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Address> Addresses { get; set; }
     }
