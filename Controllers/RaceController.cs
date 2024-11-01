@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using RunGroop.Models;
 using RunGroop.Data;
@@ -13,8 +14,14 @@ namespace RunGroop.Controllers
         }
         public IActionResult Index()
         {
-            List<Race> rsces = _context.Races.ToList();
-            return View(rsces);
+            List<Race> races = _context.Races.ToList();
+            return View(races);
+        }
+
+        public IActionResult Detail(int id)
+        {
+            Race race = _context.Races.Include(a => a.Address).FirstOrDefault(c => c.Id == id);
+            return View(race);
         }
     }
 }

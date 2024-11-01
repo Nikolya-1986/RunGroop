@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using RunGroop.Models;
 using RunGroop.Data;
@@ -15,6 +16,12 @@ namespace RunGroop.Controllers
         {
             List<Club> clubs =_context.Clubs.ToList(); //M
             return View(clubs); //V
+        } 
+        
+        public IActionResult Detail(int id)
+        {
+            Club club = _context.Clubs.Include(a => a.Address).FirstOrDefault(c => c.Id == id);
+            return View(club);
         }
 
     }
