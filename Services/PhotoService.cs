@@ -36,11 +36,12 @@ namespace RunGroop.Services
             return uploadResult;
         }
 
-        public async Task<DeletionResult> DeletePhotoAsync(string publicUrl)
+        public async Task<DeletionResult> DeletePhotoAsync(string publiId)
         {
-            var publicId = publicUrl.Split('/').Last().Split('.')[0];
-            var deleteParams = new DeletionParams(publicId);
-            return await _cloundinary.DestroyAsync(deleteParams);
+            var deleteParams = new DeletionParams(publiId);
+            var result =  await _cloundinary.DestroyAsync(deleteParams);
+
+            return result;
         }
     }
 }

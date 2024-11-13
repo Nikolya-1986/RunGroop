@@ -25,28 +25,31 @@ namespace RunGroop.Controllers
             Club club = await _clubRepository.GetByIdAsync(id);
             return View(club);
         }
+
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateClubViewModel clubViewModel)
+        public async Task<IActionResult> Create(CreateClubViewModel clubVM)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var result = await _photoService.AddPhotoAsync(clubViewModel.Image);
+                var result = await _photoService.AddPhotoAsync(clubVM.Image);
+
                 var club = new Club
                 {
-                    Title = clubViewModel.Title,
-                    Description = clubViewModel.Description,
+                    Title = clubVM.Title,
+                    Description = clubVM.Description,
                     Image = result.Url.ToString(),
-                    ClubCategory = clubViewModel.ClubCategory,
+                    ClubCategory = clubVM.ClubCategory,
+                    AppUserId = clubVM.AppUserId,
                     Address = new Address
                     {
-                        Street = clubViewModel.Address.Street,
-                        City = clubViewModel.Address.City,
-                        State = clubViewModel.Address.State,
+                        Street = clubVM.Address.Street,
+                        City = clubVM.Address.City,
+                        State = clubVM.Address.State,
                     }
                 };
                 _clubRepository.Add(club);
@@ -55,9 +58,9 @@ namespace RunGroop.Controllers
             else
             {
                 ModelState.AddModelError("", "Photo upload failed");
-            };
+            }
 
-            return View(clubViewModel);
+            return View(clubVM);
         }
 
     }

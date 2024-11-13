@@ -32,23 +32,24 @@ namespace RunGroop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateRaceViewModel raceViewModel)
+        public async Task<IActionResult> Create(CreateRaceViewModel raceVM)
         {
             if (ModelState.IsValid)
             {
-                var result = await _photoService.AddPhotoAsync(raceViewModel.Image);
+                var result = await _photoService.AddPhotoAsync(raceVM.Image);
 
                 var race = new Race
-                {
-                    Title = raceViewModel.Title,
-                    Description = raceViewModel.Description,
+                 {
+                    Title = raceVM.Title,
+                    Description = raceVM.Description,
                     Image = result.Url.ToString(),
-                    RaceCategory = raceViewModel.RaceCategory,
+                    AppUserId = raceVM.AppUserId,
+                    RaceCategory = raceVM.RaceCategory,
                     Address = new Address
                     {
-                        Street = raceViewModel.Address.Street,
-                        City = raceViewModel.Address.City,
-                        State = raceViewModel.Address.State,
+                        Street = raceVM.Address.Street,
+                        City = raceVM.Address.City,
+                        State = raceVM.Address.State,
                     }
                 };
                 _raceRepository.Add(race);
@@ -59,7 +60,7 @@ namespace RunGroop.Controllers
                 ModelState.AddModelError("", "Photo upload failed");
             }
 
-            return View(raceViewModel);
+            return View(raceVM);
         }
     }
 }
