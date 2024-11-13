@@ -1,6 +1,6 @@
 using RunGroop.Models;
 
-namespace RunGroop.Data.Interfaces
+namespace RunGroop.Interfaces
 {
     public interface IRaceRepository
     {

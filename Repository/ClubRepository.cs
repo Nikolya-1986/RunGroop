@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RunGroop.Data.Interfaces;
+using RunGroop.Interfaces;
 using RunGroop.Models;
 using RunGroop.Data;
 

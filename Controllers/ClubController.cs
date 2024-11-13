@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
-using RunGroop.Data.Interfaces;
+using RunGroop.Interfaces;
 using RunGroop.Models;
+using RunGroop.ViewModels;
 
 namespace RunGroop.Controllers
 {
     public class ClubController : Controller
     {
         private readonly IClubRepository _clubRepository;
-        public ClubController(IClubRepository clubRepository)
+        private readonly IPhotoService _photoService;
+        public ClubController(IClubRepository clubRepository, IPhotoService photoService)
         {
             _clubRepository = clubRepository;
+            _photoService = photoService;
         }
         public async Task<IActionResult> Index() //C
         {
@@ -28,14 +31,33 @@ namespace RunGroop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Club club)
+        public async Task<IActionResult> Create(CreateClubViewModel clubViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(club);
+                var result = await _photoService.AddPhotoAsync(clubViewModel.Image);
+                var club = new Club
+                {
+                    Title = clubViewModel.Title,
+                    Description = clubViewModel.Description,
+                    Image = result.Url.ToString(),
+                    ClubCategory = clubViewModel.ClubCategory,
+                    Address = new Address
+                    {
+                        Street = clubViewModel.Address.Street,
+                        City = clubViewModel.Address.City,
+                        State = clubViewModel.Address.State,
+                    }
+                };
+                _clubRepository.Add(club);
+                return RedirectToAction("Index");
             }
-            _clubRepository.Add(club);
-            return RedirectToAction("Index");
+            else
+            {
+                ModelState.AddModelError("", "Photo upload failed");
+            };
+
+            return View(clubViewModel);
         }
 
     }

@@ -147,3 +147,5 @@ D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\bin\Debug\net8.0\runtimes\win\lib\
 D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\RunGroop.csproj.AssemblyReference.cache
 D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\obj\Debug\net8.0\RunGroop.csproj.CopyComplete
+D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\bin\Debug\net8.0\CloudinaryDotNet.dll
+D:\Work\Projects\C#\ASP.Net.Core_MVC\RunGroop\bin\Debug\net8.0\Newtonsoft.Json.dll

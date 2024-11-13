@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
-using RunGroop.Data.Interfaces;
+using RunGroop.Interfaces;
 using RunGroop.Models;
+using RunGroop.ViewModels;
 
 namespace RunGroop.Controllers
 {
     public class RaceController : Controller
     {
         private readonly IRaceRepository _raceRepository;
-        public RaceController(IRaceRepository raceRepository)
+        private readonly IPhotoService _photoService;
+        public RaceController(IRaceRepository raceRepository, IPhotoService photoService)
         {
             _raceRepository = raceRepository;
+            _photoService = photoService;
         }
         public async Task<IActionResult> Index()
         {
@@ -29,14 +32,34 @@ namespace RunGroop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Race race)
+        public async Task<IActionResult> Create(CreateRaceViewModel raceViewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(race);
+                var result = await _photoService.AddPhotoAsync(raceViewModel.Image);
+
+                var race = new Race
+                {
+                    Title = raceViewModel.Title,
+                    Description = raceViewModel.Description,
+                    Image = result.Url.ToString(),
+                    RaceCategory = raceViewModel.RaceCategory,
+                    Address = new Address
+                    {
+                        Street = raceViewModel.Address.Street,
+                        City = raceViewModel.Address.City,
+                        State = raceViewModel.Address.State,
+                    }
+                };
+                _raceRepository.Add(race);
+                return RedirectToAction("Index");
             }
-            _raceRepository.Add(race);
-            return RedirectToAction("Index");
+            else
+            {
+                ModelState.AddModelError("", "Photo upload failed");
+            }
+
+            return View(raceViewModel);
         }
     }
 }
