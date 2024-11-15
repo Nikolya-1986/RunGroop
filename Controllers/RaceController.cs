@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RunGroop.Interfaces;
-using RunGroop.Models;
 using RunGroop.ViewModels;
+using RunGroop.Models;
 
 namespace RunGroop.Controllers
 {
@@ -61,6 +61,68 @@ namespace RunGroop.Controllers
             }
 
             return View(raceVM);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var race = await _raceRepository.GetByIdAsync(id);
+            if (race == null) return View("Error");
+
+            var raceVM = new EditRaceViewModel
+            {
+                Title = race.Title,
+                Description = race.Description,
+                AddressId = race.AddressId,
+                Address = race.Address,
+                URL = race.Image,
+                RaceCategory = race.RaceCategory,
+            };
+
+            return View(raceVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditRaceViewModel raceVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit club");
+                return View("Edit", raceVM);
+            }
+
+            var userRace = await _raceRepository.GetByIdAsyncNoTracking(id);
+
+            if (userRace != null)
+            {
+                try
+                {
+                    await _photoService.DeletePhotoAsync(userRace.Image);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Could not delete photo");
+                    return View(raceVM);
+                }
+                var photoResult = await _photoService.AddPhotoAsync(raceVM.Image);
+
+                var race = new Race
+                {
+                    Id = id,
+                    Title = raceVM.Title,
+                    Description = raceVM.Description,
+                    Image = photoResult.Url.ToString(),
+                    AddressId = (int)raceVM.AddressId,
+                    Address = raceVM.Address,
+                    RaceCategory = raceVM.RaceCategory,
+                };
+
+                _raceRepository.Update(race);
+                return RedirectToAction("Index");
+            }
+            else {
+                return View(raceVM);
+            }
+   
         }
     }
 }
