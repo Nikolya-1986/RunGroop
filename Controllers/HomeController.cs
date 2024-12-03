@@ -27,7 +27,7 @@ public class HomeController : Controller
         var homeVM = new HomeViewModel();
         try
         {
-            string url = "https://ipinfo.io?token=7x6s983hj35kl";
+            string url = "https://ipinfo.io?token=b87f0a044e0b65";
             var info = new WebClient().DownloadString(url);
             ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
             RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
