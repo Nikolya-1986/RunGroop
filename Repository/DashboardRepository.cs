@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using RunGroop.Data;
+using Microsoft.EntityFrameworkCore;
 using RunGroop.Interfaces;
 using RunGroop.Models;
+using RunGroop.Data;
 
 namespace RunGroop.Repository
 {
@@ -29,6 +26,27 @@ namespace RunGroop.Repository
             var curUser = _httpContextAccessor.HttpContext?.User.GetUserId();
             var userRaces = _context.Races.Where(r => r.AppUser.Id == curUser.ToString());
             return userRaces.ToList();
+        }
+
+        public async Task<AppUser> GetUserById(string id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+        public async Task<AppUser> GetUserByIdNoTracking(string id)
+        {
+            return await _context.Users.Where(u => u.Id == id).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public bool Update(AppUser user)
+        {
+            _context.Update(user);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

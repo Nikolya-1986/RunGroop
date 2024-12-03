@@ -23,11 +23,9 @@ namespace RunGroop.Controllers
                 {
                     Id = user.Id,
                     Pace = user.Pace,
-                    // City = user.City,
-                    // State = user.State,
                     Mileage = user.Mileage,
                     UserName = user.UserName,
-                    // ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                    ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
                 };
                 result.Add(userViewModel);
             }
